@@ -18,7 +18,7 @@
 #      OK
 #      [I 130605 12:35:16 testing:436] PASS
 #
-#  3. Reads the tornado document and check how it works:
+#  3. Reads the tornado document and this code to check how it works:
 #
 #      $ w3m http://www.tornadoweb.org/en/stable/
 #      $ w3m http://www.tornadoweb.org/en/branch2.1/web.html
