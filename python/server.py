@@ -20,6 +20,7 @@
 #
 #  3. Reads the tornado document and check how it works:
 #
+#      $ w3m http://www.tornadoweb.org/en/stable/
 #      $ w3m http://www.tornadoweb.org/en/branch2.1/web.html
 #
 #  4. Use pydoc and take a look at the document and checks how
