@@ -16,10 +16,10 @@ class LsHandlerTest(tornado.testing.AsyncHTTPTestCase):
   def get_app(self):
     return tornado.web.Application([(r'/', server.LsHandler)])
 
-  def test_toppage_should_contain_vmlinuz(self):
+  def test_toppage_should_contain_bin(self):
     self.http_client.fetch(self.get_url('/'), self.stop)
     res = self.wait()
-    self.assertIn('vmlinuz', res.body)
+    self.assertTrue(res.body.find('bin') != 0)
 
 
 def all():
