@@ -144,6 +144,7 @@ class LsHandler(tornado.web.RequestHandler):
     p = subprocess.Popen(
         'LANG=ja_JP.UTF-8 /bin/ls -l /', shell=True, stdout=subprocess.PIPE)
     self.write('<pre>%s</pre>' % _Escape(p.stdout.read()))
+    # TODO(taru0216) : Handles error cases correctly.
     p.wait()
 
 
