@@ -96,6 +96,7 @@ __copyright__ = 'Copyright 2013 Masato Taruishi'
 
 
 import subprocess
+import sys
 import tornado.escape
 import tornado.ioloop
 import tornado.options
@@ -148,9 +149,19 @@ class LsHandler(tornado.web.RequestHandler):
     p.wait()
 
 
-def main():
-  """Starts the server."""
-  tornado.options.parse_command_line()
+def main(args):
+  """Starts the server.
+
+  This runs the web server of this module at the port '12345' as
+  well as parsing command line options.
+
+  >>> import server
+  >>> server.main(['server.py', '--help'])
+
+  Args
+    args : list of command line arguments.
+  """
+  tornado.options.parse_command_line(args)
   app = tornado.web.Application(
       [
           (r'/', LsHandler),
@@ -160,4 +171,4 @@ def main():
 
 
 if __name__ == '__main__':
-  main()
+  main(sys.argv)
