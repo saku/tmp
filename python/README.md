@@ -1,5 +1,5 @@
-SIMPLE CODES FOR PYTHON TRANING
-===============================
+SIMPLE CODES FOR PYTHON TRAINING
+================================
 
 This directory contains simple python files to write a web server
 in python. It has 2 files:
