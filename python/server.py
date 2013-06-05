@@ -47,6 +47,9 @@
 #   3. Creates a fake stub for command execution and write a test
 #      for /bin/ls failures in LsHandlerTest.
 #
+#   4. Creates setup.py and generates your package. Nice to have
+#      your script and library separeted.
+#
 # Coding style:
 #
 # - Each definition in top level should be separated by 2 empty lines.
