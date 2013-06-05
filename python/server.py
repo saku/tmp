@@ -50,6 +50,8 @@
 #   4. Creates setup.py and generates your package. Nice to have
 #      your script and library separeted.
 #
+#   5. Adds authentication and authorization layer.
+#
 # Coding style:
 #
 # - Each definition in top level should be separated by 2 empty lines.
