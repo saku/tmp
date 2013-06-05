@@ -60,9 +60,9 @@
 # - Comments by '"""', or docstring, are both for users and readers.
 # - Functions which starts with '_' doesn't appear in pydoc so you can
 #   define private functions.
-# - Use ' for string literal except that it contains '.
+# - Use "'" for string literal except that it contains "'".
 # - All public methods/function should have docstring.
-# - Strats with capital case when you put '.' at the end.
+# - Starts with capital case when you put '.' at the end.
 # - Describes who is the first author and copyright holder.
 # - import libraries to use should be ordered in alpabetical order.
 # - 2 spaces for structual indent and 4 spaces for line-wrap
