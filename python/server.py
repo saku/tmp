@@ -6,8 +6,8 @@
 #  1. Runs this server and checks whether it shows the contents of
 #     your root directory:
 #
-#      $ python server.py
-#      $ w3m http://localhost:12345/ # from a different console
+#      $ python server.py --port=<port>
+#      $ w3m http://localhost:<port>/ # from a different console
 #
 #  2. Runs the test and checks whether the test passes:
 #
@@ -97,12 +97,17 @@ __author__ = 'Masato Taruishi'
 __copyright__ = 'Copyright 2013 Masato Taruishi'
 
 
+from tornado.options import define, options
+
 import subprocess
 import sys
 import tornado.escape
 import tornado.ioloop
 import tornado.options
 import tornado.web
+
+
+define('port', default=12345, help='port to listen', metavar='PORT')
 
 
 def _Escape(str):
@@ -155,7 +160,8 @@ def main(args):
   """Starts the server.
 
   This runs the web server of this module at the port '12345' as
-  well as parsing command line options.
+  well as parsing command line options. You can use --port option
+  to change the port to listen.
 
   >>> import server
   >>> server.main(['server.py', '--help'])
@@ -168,7 +174,7 @@ def main(args):
       [
           (r'/', LsHandler),
       ])
-  app.listen(12345)
+  app.listen(options.port)
   tornado.ioloop.IOLoop.instance().start()
 
 
