@@ -55,6 +55,7 @@
 # - Comments by '"""', or docstring, are both for users and readers.
 # - Functions which starts with '_' doesn't appear in pydoc so you can
 #   define private functions.
+# - Use ' for string literal except that it contains '.
 # - All public methods/function should have docstring.
 # - Strats with capital case when you put '.' at the end.
 # - Describes who is the first author and copyright holder.
@@ -109,6 +110,12 @@ class LsHandler(tornado.web.RequestHandler):
 
   This handler accepts GET requests and send the output of
   '/bin/ls -l /'
+
+  The typical use case is as follows:
+
+  >>> app = tornado.web.Application([(r'/', LsHandler)])
+  >>> app.listen(12345)
+  >>> tornado.ioloop.IOLoop.instance().start()
   """
 
   def get(self):
@@ -125,7 +132,7 @@ def main():
   tornado.options.parse_command_line()
   app = tornado.web.Application(
       [
-          (r"/", LsHandler),
+          (r'/', LsHandler),
       ])
   app.listen(12345)
   tornado.ioloop.IOLoop.instance().start()
