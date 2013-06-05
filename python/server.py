@@ -110,7 +110,7 @@ def _Escape(str):
     str: byte string
 
   Returns:
-    Unicode string which is valid within html.  
+    Unicode object which is valid within html.  
 
   Raises:
     UnicodeDecodeError: Thrown when the specified byte string
