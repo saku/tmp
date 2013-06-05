@@ -132,7 +132,15 @@ class LsHandler(tornado.web.RequestHandler):
   """
 
   def get(self):
-    """Handles GET requests."""
+    """Handles GET requests.
+
+    This handles http GET requests and sends the files in your
+    root directory in the simple http format as follows:
+
+    <pre>
+    ...
+    </pre>
+    """
     p = subprocess.Popen(
         'LANG=ja_JP.UTF-8 /bin/ls -l /', shell=True, stdout=subprocess.PIPE)
     self.write('<pre>%s</pre>' % _Escape(p.stdout.read()))
