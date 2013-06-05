@@ -80,7 +80,7 @@ The easiest way to use this module to run this module directly by:
 
  python server.py
 
-This listen the port 12345 and handles http requests. Go to:
+This listens the port 12345 and handles http requests. Go to:
 
  http://localhost:12345/
 
