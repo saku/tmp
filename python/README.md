@@ -11,7 +11,7 @@ Please open 'server.py' and follow the task described in the
 comment area.
 
 <pre>
- $ sudo yum install python-tornado
+ $ sudo yum install python-tornado git
  $ git clone https://github.com/taru0216/tmp.git
  $ cd tmp/python
  tmp/python$ less server.py
