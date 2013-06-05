@@ -43,6 +43,9 @@
 #      information in your real admin work and make it accessible at
 #      http://localhost:12345/statusz.
 #
+#   3. Creates a fake stub for command execution and write a test
+#      for /bin/ls failures in LsHandlerTest.
+#
 # Coding style:
 #
 # - Each definition in top level should be separated by 2 empty lines.
