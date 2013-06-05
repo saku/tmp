@@ -75,6 +75,16 @@ simple web server to show the system information
 
 This is a simple web server to execute several command line tools
 and show the output for your browser.
+
+The easiest way to use this module to run this module directly by:
+
+ python server.py
+
+This listen the port 12345 and handles http requests. Go to:
+
+ http://localhost:12345/
+
+to see the server output.
 """
 
 
