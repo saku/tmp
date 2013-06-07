@@ -71,7 +71,7 @@
 #   in your docstring. Return value and expected exceptions should be
 #   mentioned as well.
 # - Considers code readers to make it easy to understand.
-# - Tests may not follow the above policies but better to follow.
+# - Tests do not have to follow the above policies but better to follow.
 #
 
 
