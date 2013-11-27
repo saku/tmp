@@ -125,8 +125,131 @@ def _Escape(str):
   """
   return tornado.escape.xhtml_escape(tornado.escape.to_unicode(str))
 
+class Auth:
 
-class LsHandler(tornado.web.RequestHandler):
+  def __init__(self, authid):
+    self.authid = authid
+
+  def AuthId(self):
+    return self.authid
+
+class Authenticator:
+
+  def Authenticate(self, handler):
+    return None
+
+  def Authenticated(self, handler, auth):
+    return None
+
+class SessionAuthenticator(Authenticator):
+
+  def Authenticate(self, handler):
+    authid = handler.get_secure_cookie("authid")
+    if authid:
+      return Auth(authid)
+    return None
+
+  def Authenticated(self, handler, auth):
+    handler.set_secure_cookie("authid", auth.authid)
+
+class PasswordAuthenticator(Authenticator):
+
+  _PASSDB = {
+      'user1': 'passw0rd'
+  }
+
+  def Authenticate(self, handler):
+    user = handler.get_argument("user","")
+    password = handler.get_argument("password","")
+    if self.__class__._PASSDB.has_key(user):
+      if self.__class__._PASSDB[user] == password:
+        return Auth(user)
+    return None
+
+class Service:
+  """Exec command and return html decorated result.
+
+  This Class may be used stub by test class.
+  """
+  def ExecCommand(self, cmd):
+    p = subprocess.Popen(
+        'LANG=ja_JP.UTF-8 ' + cmd, shell=True, stdout=subprocess.PIPE)
+    buf = ('<pre>%s</pre>' % _Escape(p.stdout.read()))
+    p.wait()
+    return buf
+
+  def LsCommand(self):
+    return self.ExecCommand('ls -l /')
+
+  def DfCommand(self):
+    return self.ExecCommand('df -h')
+
+  def FreeCommand(self):
+    return self.ExecCommand('free')
+
+  def UptimeCommand(self):
+    return self.ExecCommand('uptime')
+
+class BaseHandler(tornado.web.RequestHandler):
+  """Base Action Handler
+
+  This handler accepts GET requests and instantiate command obj.
+  """
+
+  def initialize(self, service=None, authenticators=None):
+    """Initializes the handler."""
+    if service:
+      self.service = service
+    else:
+      self.service = Service()
+
+    if authenticators:
+      self._authenticators = authenticators
+    else :
+      self._authenticators = [SessionAuthenticator(), PasswordAuthenticator()]
+
+  def get_current_user(self):
+    auth = self._Authenticate()
+    if auth:
+      return auth.AuthId()
+    else :
+      return None
+
+  def _Authenticate(self):
+    for authenticator in self._authenticators:
+      auth = authenticator.Authenticate(self)
+      if auth:
+        self._Authenticated(auth)
+        return auth
+    return None
+
+  def _Authenticated(self, auth):
+    for authenticator in self._authenticators:
+      authenticator.Authenticated(self, auth)
+
+class LoginHandler(BaseHandler):
+  def get(self):
+    self.render(
+      "login.html",
+      next=self.get_argument("next","/"),
+      error=self.get_argument("error",False)
+    )
+
+  def post(self):
+    auth = self._Authenticate()
+    if auth:
+      self.redirect(self.get_argument("next", "/"))
+    else :
+      url_param = "?error=" + tornado.escape.url_escape("Login incorrect.")
+      url_param = url_param + "&next=" +tornado.escape.url_escape(self.get_argument("next", "/"))
+      self.redirect("/login" + url_param)
+
+class LogoutHandler(BaseHandler):
+  def get(self):
+    self.clear_cookie("user")
+    self.redirect("/login")
+
+class LsHandler(BaseHandler):
   """Shows the output of '/bin/ls'.
 
   This handler accepts GET requests and send the output of
@@ -139,6 +262,7 @@ class LsHandler(tornado.web.RequestHandler):
   >>> tornado.ioloop.IOLoop.instance().start()
   """
 
+  @tornado.web.authenticated
   def get(self):
     """Handles GET requests.
 
@@ -149,12 +273,71 @@ class LsHandler(tornado.web.RequestHandler):
     ...
     </pre>
     """
-    p = subprocess.Popen(
-        'LANG=ja_JP.UTF-8 /bin/ls -l /', shell=True, stdout=subprocess.PIPE)
-    self.write('<pre>%s</pre>' % _Escape(p.stdout.read()))
-    # TODO(taru0216) : Handles error cases correctly.
-    p.wait()
+    self.write(self.service.LsCommand())
 
+class DfHandler(BaseHandler):
+  """Shows the output of '/bin/df -h'.
+
+  This handler accepts GET requests and send the output of
+  '/bin/df -h'
+
+  The typical use case is as follows:
+
+  >>> app = tornado.web.Application([(r'/df', DfHandler)])
+  >>> app.listen(12345)
+  >>> tornado.ioloop.IOLoop.instance().start()
+  """
+
+  @tornado.web.authenticated
+  def get(self):
+    """Handles GET requests.
+
+    This handles http GET requests and sends the files in your
+    root directory in the simple http format as follows:
+
+    <pre>
+    ...
+    </pre>
+    """
+    self.write(self.service.DfCommand())
+
+class StatuszHandler(BaseHandler):
+  """Shows the output of system status.
+
+  This handler accepts GET requests and send the output of
+  '/usr/bin/free'
+  '/usr/bin/uptime'
+  '/bin/df -h'
+
+  The typical use case is as follows:
+
+  >>> app = tornado.web.Application([(r'/statusz', StatuszHandler)])
+  >>> app.listen(12345)
+  >>> tornado.ioloop.IOLoop.instance().start()
+  """
+
+  @tornado.web.authenticated
+  def get(self):
+    """Handles GET requests.
+
+    This handles http GET requests and sends the files in your
+    root directory in the simple http format as follows:
+
+    <pre>
+    ...
+    </pre>
+    """
+    #output free
+    self.write('<h2>Memory</h2>')
+    self.write(self.service.FreeCommand())
+
+    #output uptime
+    self.write('<h2>Uptime</h2>')
+    self.write(self.service.UptimeCommand())
+
+    #output df
+    self.write('<h2>Disk usage</h2>')
+    self.write(self.service.DfCommand())
 
 def main(args):
   """Starts the server.
@@ -170,10 +353,20 @@ def main(args):
     args : list of command line arguments.
   """
   tornado.options.parse_command_line(args)
+  settings = {
+    "cookie_secret": "ADA7D03B-B889-45C7-ACB9-423DDD88A725",
+    "login_url": "/login",
+    "xsrf_cookies": True,
+  }
   app = tornado.web.Application(
       [
           (r'/', LsHandler),
-      ])
+          (r'/ls', LsHandler),
+          (r'/login', LoginHandler),
+          (r'/logout', LogoutHandler),
+          (r'/df', DfHandler),
+          (r'/statusz', StatuszHandler),
+      ], **settings)
   app.listen(options.port)
   tornado.ioloop.IOLoop.instance().start()
 

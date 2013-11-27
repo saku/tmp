@@ -1,0 +1,15 @@
+<html>
+  <body>
+	{% if error %}
+	<div>Error: {{ error }}</div>
+	{% end %}
+	<form action="/login" method="post">
+ 	  {% module xsrf_form_html() %}
+
+	  Username: <input type="text" name="user"><br />
+      Password: <input type="password" name="password"><br />
+      <input type="hidden" name="next" value="{{ next }}">
+      <input type="submit" value="Sign in">
+	</form>
+  </body>
+</html>
