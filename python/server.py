@@ -229,13 +229,13 @@ class BaseHandler(tornado.web.RequestHandler):
       self._authenticators = [SessionAuthenticator(), PasswordAuthenticator()]
 
   def get_current_user(self):
-    auth = self._Authenticate()
+    auth = self._IsAuthenticated()
     if auth:
       return auth.AuthId()
     else :
       return None
 
-  def _Authenticate(self):
+  def _IsAuthenticated(self):
     for authenticator in self._authenticators:
       auth = authenticator.Authenticate(self)
       if auth:
@@ -257,7 +257,7 @@ class LoginHandler(BaseHandler):
     )
 
   def post(self):
-    auth = self._Authenticate()
+    auth = self._IsAuthenticated()
     if auth:
       self.redirect(self.get_argument("next", "/"))
     else :
