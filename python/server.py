@@ -251,9 +251,9 @@ class BaseHandler(tornado.web.RequestHandler):
 class LoginHandler(BaseHandler):
   def get(self):
     self.render(
-      "login.html",
-      next=self.get_argument("next","/"),
-      error=self.get_argument("error",False)
+    "login.html",
+    next=self.get_argument("next","/"),
+    error=self.get_argument("error",False)
     )
 
   def post(self):
@@ -261,10 +261,9 @@ class LoginHandler(BaseHandler):
     if auth:
       self.redirect(self.get_argument("next", "/"))
     else :
-      params = urllib.urlencode(
-      {
-        "error": "Login incorrect",
-        "next": self.get_argument("next", "/")
+      params = urllib.urlencode({
+      "error": "Login incorrect",
+      "next": self.get_argument("next", "/")
       })
       self.redirect("/login?" + params)
 
