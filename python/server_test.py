@@ -58,7 +58,8 @@ class StubService:
   """
 
   def LsCommand(self):
-    return """total 16453
+    return """<pre>
+total 16453
 drwxrwxr-x+ 134 root  admin     4556 11 26 22:58 Applications
 drwxrwxr-x+   6 root  wheel      204 11  7 00:08 Incompatible Software
 drwxr-xr-x+  69 root  wheel     2346 11 26 10:15 Library
@@ -79,25 +80,31 @@ drwxr-xr-x@  65 root  wheel     2210 11 26 10:08 sbin
 lrwxr-xr-x@   1 root  wheel       11 11 26 09:56 tmp -> private/tmp
 drwxr-xr-x@  11 root  wheel      374 11 26 10:08 usr
 lrwxr-xr-x@   1 root  wheel       11 11 26 09:56 var -> private/var
-"""
+</pre>"""
 
   def DfCommand(self):
-    return """Filesystem      Size   Used  Avail Capacity  iused     ifree %iused  Mounted on
+    return """<pre>
+Filesystem      Size   Used  Avail Capacity  iused     ifree %iused  Mounted on
 /dev/disk0s2   931Gi  317Gi  614Gi    35% 83058606 161007755   34%   /
 devfs          188Ki  188Ki    0Bi   100%      650         0  100%   /dev
 map -hosts       0Bi    0Bi    0Bi   100%        0         0  100%   /net
 map auto_home    0Bi    0Bi    0Bi   100%        0         0  100%   /home
-/dev/disk1s2   931Gi  310Gi  621Gi    34% 81328163 162778503   33%   /Volumes/FailSafe"""
+/dev/disk1s2   931Gi  310Gi  621Gi    34% 81328163 162778503   33%   /Volumes/FailSafe
+</pre>"""
 
   # Because Mac have not "free" command, so it needs implement fake method.
   def FreeCommand(self):
-    return """             total       used       free     shared    buffers     cached
+    return """<pre>
+             total       used       free     shared    buffers     cached
 Mem:        616392     566840      49552          0     151448     153464
 -/+ buffers/cache:     261928     354464
-Swap:            0          0          0"""
+Swap:            0          0          0
+<pre>"""
 
   def UptimeCommand(self):
-    return """ 1:21  up  3:02, 3 users, load averages: 2.59 2.54 2.66"""
+    return """<pre>
+1:21  up  3:02, 3 users, load averages: 2.59 2.54 2.66
+</pre>"""
 
 
 APP_SETTINGS = {
