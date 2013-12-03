@@ -176,7 +176,7 @@ class Service:
 
   This Class may be used stub by test class.
   """
-  def ExecCommand(self, cmd):
+  def _ExecCommand(self, cmd):
     p = subprocess.Popen(
         'LANG=ja_JP.UTF-8 ' + cmd, shell=True, stdout=subprocess.PIPE)
     buf = ('<pre>%s</pre>' % _Escape(p.stdout.read()))
@@ -184,16 +184,16 @@ class Service:
     return buf
 
   def LsCommand(self):
-    return self.ExecCommand('ls -l /')
+    return self._ExecCommand('ls -l /')
 
   def DfCommand(self):
-    return self.ExecCommand('df -h')
+    return self._ExecCommand('df -h')
 
   def FreeCommand(self):
-    return self.ExecCommand('free')
+    return self._ExecCommand('free')
 
   def UptimeCommand(self):
-    return self.ExecCommand('uptime')
+    return self._ExecCommand('uptime')
 
 
 class BaseHandler(tornado.web.RequestHandler):
