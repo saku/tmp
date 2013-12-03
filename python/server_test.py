@@ -117,7 +117,6 @@ STUB_AUTHENTICATORS = dict(authenticators=[StubAuthenticator()])
 
 class LoginHandlerTest(tornado.testing.AsyncHTTPTestCase):
   def get_app(self):
-    _auth = StubAuth()
     return tornado.web.Application(
       [
         (r'/login', server.LoginHandler)
