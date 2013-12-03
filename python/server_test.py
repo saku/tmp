@@ -27,12 +27,14 @@ def _Escape(str):
   """
   return tornado.escape.xhtml_escape(tornado.escape.to_unicode(str))
 
+
 class StubAuth:
   def __init__(self):
     self.authid = "testUser"
 
   def AuthId(self):
     return self.authid
+
 
 class StubAuthenticator:
   """Stub of authenticator
@@ -45,6 +47,7 @@ class StubAuthenticator:
 
   def Authenticated(self, handler, auth):
     handler.set_secure_cookie("authid", auth.authid)
+
 
 class StubService:
   """To test back console, this object return virtual result.
@@ -95,14 +98,13 @@ Swap:            0          0          0"""
     return """ 1:21  up  3:02, 3 users, load averages: 2.59 2.54 2.66"""
 
 
-
 APP_SETTINGS = {
   "cookie_secret": "ADA7D03B-B889-45C7-ACB9-423DDD88A725",
   "login_url": "/login",
   "xsrf_cookies": True,
 }
-
 STUB_AUTHENTICATORS = dict(authenticators=[StubAuthenticator()])
+
 
 class LoginHandlerTest(tornado.testing.AsyncHTTPTestCase):
   def get_app(self):
@@ -131,6 +133,7 @@ class LoginHandlerTest(tornado.testing.AsyncHTTPTestCase):
   #  self.http_client.fetch(self.get_url('/login'), self.stop, **kwargs)
   #  res = self.wait()
 
+
 class LsHandlerTest(tornado.testing.AsyncHTTPTestCase):
 
   def get_app(self):
@@ -149,6 +152,7 @@ class LsHandlerTest(tornado.testing.AsyncHTTPTestCase):
     res = self.wait()
     self.assertTrue(res.body.find('bin') >= 0)
 
+
 class DfHandlerTest(tornado.testing.AsyncHTTPTestCase):
 
   def get_app(self):
@@ -163,6 +167,7 @@ class DfHandlerTest(tornado.testing.AsyncHTTPTestCase):
     self.assertTrue(res.body.find('devfs') >= 0)
     self.assertTrue(res.body.find('map -hosts') >= 0)
     self.assertTrue(res.body.find('map auto_home') >= 0)
+
 
 class StatuszHandlerTest(tornado.testing.AsyncHTTPTestCase):
 
@@ -188,6 +193,7 @@ class StatuszHandlerTest(tornado.testing.AsyncHTTPTestCase):
     self.assertTrue(res.body.find('devfs') >= 0)
     self.assertTrue(res.body.find('map -hosts') >= 0)
     self.assertTrue(res.body.find('map auto_home') >= 0)
+
 
 def all():
   suite = unittest.TestSuite()
