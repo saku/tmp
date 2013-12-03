@@ -125,6 +125,7 @@ def _Escape(str):
   """
   return tornado.escape.xhtml_escape(tornado.escape.to_unicode(str))
 
+
 class Auth:
 
   def __init__(self, authid):
@@ -133,6 +134,7 @@ class Auth:
   def AuthId(self):
     return self.authid
 
+
 class Authenticator:
 
   def Authenticate(self, handler):
@@ -140,6 +142,7 @@ class Authenticator:
 
   def Authenticated(self, handler, auth):
     return None
+
 
 class SessionAuthenticator(Authenticator):
 
@@ -151,6 +154,7 @@ class SessionAuthenticator(Authenticator):
 
   def Authenticated(self, handler, auth):
     handler.set_secure_cookie("authid", auth.authid)
+
 
 class PasswordAuthenticator(Authenticator):
 
@@ -165,6 +169,7 @@ class PasswordAuthenticator(Authenticator):
       if self.__class__._PASSDB[user] == password:
         return Auth(user)
     return None
+
 
 class Service:
   """Exec command and return html decorated result.
@@ -189,6 +194,7 @@ class Service:
 
   def UptimeCommand(self):
     return self.ExecCommand('uptime')
+
 
 class BaseHandler(tornado.web.RequestHandler):
   """Base Action Handler
@@ -227,6 +233,7 @@ class BaseHandler(tornado.web.RequestHandler):
     for authenticator in self._authenticators:
       authenticator.Authenticated(self, auth)
 
+
 class LoginHandler(BaseHandler):
   def get(self):
     self.render(
@@ -244,10 +251,12 @@ class LoginHandler(BaseHandler):
       url_param = url_param + "&next=" +tornado.escape.url_escape(self.get_argument("next", "/"))
       self.redirect("/login" + url_param)
 
+
 class LogoutHandler(BaseHandler):
   def get(self):
     self.clear_cookie("user")
     self.redirect("/login")
+
 
 class LsHandler(BaseHandler):
   """Shows the output of '/bin/ls'.
@@ -275,6 +284,7 @@ class LsHandler(BaseHandler):
     """
     self.write(self.service.LsCommand())
 
+
 class DfHandler(BaseHandler):
   """Shows the output of '/bin/df -h'.
 
@@ -300,6 +310,7 @@ class DfHandler(BaseHandler):
     </pre>
     """
     self.write(self.service.DfCommand())
+
 
 class StatuszHandler(BaseHandler):
   """Shows the output of system status.
