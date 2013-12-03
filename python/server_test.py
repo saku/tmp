@@ -28,12 +28,14 @@ def _Escape(str):
   return tornado.escape.xhtml_escape(tornado.escape.to_unicode(str))
 
 
-class StubAuth:
-  def __init__(self):
-    self.authid = "testUser"
+  class StubAuth:
+  """Stub of auth
+
+  This Class just return AuthId as "testUser"
+  """
 
   def AuthId(self):
-    return self.authid
+    return "testUser"
 
 
 class StubAuthenticator:
@@ -46,7 +48,7 @@ class StubAuthenticator:
     return StubAuth()
 
   def Authenticated(self, handler, auth):
-    handler.set_secure_cookie("authid", auth.authid)
+    handler.set_secure_cookie("authid", auth.AuthId())
 
 
 class StubService:
