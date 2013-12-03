@@ -105,6 +105,7 @@ import tornado.escape
 import tornado.ioloop
 import tornado.options
 import tornado.web
+import urllib
 
 
 define('port', default=12345, help='port to listen', metavar='PORT')
@@ -247,9 +248,12 @@ class LoginHandler(BaseHandler):
     if auth:
       self.redirect(self.get_argument("next", "/"))
     else :
-      url_param = "?error=" + tornado.escape.url_escape("Login incorrect.")
-      url_param = url_param + "&next=" +tornado.escape.url_escape(self.get_argument("next", "/"))
-      self.redirect("/login" + url_param)
+      params = urllib.urlencode(
+      {
+        "error": "Login incorrect",
+        "next": self.get_argument("next", "/")
+      })
+      self.redirect("/login?" + params)
 
 
 class LogoutHandler(BaseHandler):
