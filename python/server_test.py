@@ -28,10 +28,10 @@ def _Escape(str):
   return tornado.escape.xhtml_escape(tornado.escape.to_unicode(str))
 
 
-  class StubAuth:
+class StubAuth:
   """Stub of auth
 
-  This Class just return AuthId as "testUser"
+  This Class just return AuthId as testUser
   """
 
   def AuthId(self):
