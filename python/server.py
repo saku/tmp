@@ -366,6 +366,7 @@ class StatuszHandler(BaseHandler):
     self.write('<h2>Disk usage</h2>')
     self.write(self.service.DfCommand())
 
+
 def main(args):
   """Starts the server.
 
