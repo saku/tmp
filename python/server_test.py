@@ -109,9 +109,11 @@ STUB_AUTHENTICATORS = dict(authenticators=[StubAuthenticator()])
 class LoginHandlerTest(tornado.testing.AsyncHTTPTestCase):
   def get_app(self):
     _auth = StubAuth()
-    return tornado.web.Application([
-      (r'/login', server.LoginHandler)
-    ], **APP_SETTINGS)
+    return tornado.web.Application(
+      [
+        (r'/login', server.LoginHandler)
+      ],
+      **APP_SETTINGS)
 
   def test_login_xsrf_using(self):
     self.http_client.fetch(self.get_url('/login'), self.stop)
@@ -137,10 +139,12 @@ class LoginHandlerTest(tornado.testing.AsyncHTTPTestCase):
 class LsHandlerTest(tornado.testing.AsyncHTTPTestCase):
 
   def get_app(self):
-    return tornado.web.Application([
-      (r'/', server.LsHandler, STUB_AUTHENTICATORS),
-      (r'/ls', server.LsHandler, STUB_AUTHENTICATORS),
-    ], **APP_SETTINGS)
+    return tornado.web.Application(
+      [
+        (r'/', server.LsHandler, STUB_AUTHENTICATORS),
+        (r'/ls', server.LsHandler, STUB_AUTHENTICATORS),
+      ],
+      **APP_SETTINGS)
 
   def test_toppage_should_contain_bin(self):
     self.http_client.fetch(self.get_url('/'), self.stop)
@@ -156,9 +160,11 @@ class LsHandlerTest(tornado.testing.AsyncHTTPTestCase):
 class DfHandlerTest(tornado.testing.AsyncHTTPTestCase):
 
   def get_app(self):
-    return tornado.web.Application([
-      (r'/df', server.DfHandler, STUB_AUTHENTICATORS),
-    ], **APP_SETTINGS)
+    return tornado.web.Application(
+      [
+        (r'/df', server.DfHandler, STUB_AUTHENTICATORS),
+      ],
+      **APP_SETTINGS)
 
   def test_dfpage_should_contain_disks(self):
     self.http_client.fetch(self.get_url('/df'), self.stop)
@@ -173,10 +179,13 @@ class StatuszHandlerTest(tornado.testing.AsyncHTTPTestCase):
 
   def get_app(self):
     _stub = StubService()
-    return tornado.web.Application([
-      (r'/statusz', server.StatuszHandler,
-       dict(authenticators=[StubAuthenticator()], service=StubService())),
-    ], **APP_SETTINGS)
+    return tornado.web.Application(
+      [
+        (r'/statusz', server.StatuszHandler,
+         dict(authenticators=[StubAuthenticator()],
+              service=StubService())),
+      ],
+      **APP_SETTINGS)
 
   def test_statuszpage_should_contain_needed_result(self):
     self.http_client.fetch(self.get_url('/statusz'), self.stop)
