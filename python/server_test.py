@@ -136,12 +136,9 @@ class LoginHandlerTest(tornado.testing.AsyncHTTPTestCase):
     # check user input field
     self.assertTrue(res.body.find('name="password"') >= 0)
 
-  #def test_login_user_authenticate(self):
-  #  kwargs = {
-  #    "method": "POST",
-  #  }
-  #  self.http_client.fetch(self.get_url('/login'), self.stop, **kwargs)
-  #  res = self.wait()
+  def test_login_user_authenticate(self):
+    self.http_client.fetch(self.get_url('/login'), self.stop, method="POST")
+    res = self.wait()
 
 
 class LsHandlerTest(tornado.testing.AsyncHTTPTestCase):
