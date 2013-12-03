@@ -173,9 +173,14 @@ class PasswordAuthenticator(Authenticator):
 
 
 class Service:
-  """Exec command and return html decorated result.
+  """Set of utilities to show system information.
 
-  This Class may be used stub by test class.
+  This class provides a set of utilities to show system information.
+  These system information are escaped in html CDATA so that you
+  can easily put the information as html contents.
+
+  >>> service = Services()
+  >>> service.LsCommand()
   """
   def _ExecCommand(self, cmd):
     p = subprocess.Popen(
@@ -198,9 +203,17 @@ class Service:
 
 
 class BaseHandler(tornado.web.RequestHandler):
-  """Base Action Handler
+  """Base Handler
 
-  This handler accepts GET requests and instantiate command obj.
+  This handler is Base Class for tornado.web.RequestHandler.
+  If you need authentication on handler, extend BaseHandler.
+
+  Default setting using two different authenticate.
+  1. Session authenticate
+    Check cookie information.
+  2. Password authenticate
+    Check user ID and password.
+    If you passed authenticate, create cookie.
   """
 
   def initialize(self, service=None, authenticators=None):
