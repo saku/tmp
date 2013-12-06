@@ -222,6 +222,26 @@ class AbstractAuthHandler(tornado.web.RequestHandler):
   2. Password authenticate
     Check user ID and password.
     If you passed authenticate, create cookie.
+
+  The typical usecase to use this class is as follows:
+  >>> class MyHandler(AbstractAuthHandler):
+  ...  @tornado.web.authenticated
+  ...  def get(self):
+  ...    self.write("hello, world")
+
+  >>>  settings = {
+  ...      "cookie_secret": "ADA7D03B-B889-45C7-ACB9-423DDD88A725",
+  ...      "login_url": "/login",
+  ...      "xsrf_cookies": True
+  ...  }
+
+  >>>  app = tornado.web.Application(
+  ...  [
+  ...      (r'/', LsHandler),
+  ...      (r'/login', LoginHandler),
+  ...      (r'/logout', LogoutHandler),
+  ...  ],
+  ...  **settings)
   """
 
   def initialize(self, service=None, authenticators=None):
