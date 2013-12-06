@@ -210,11 +210,11 @@ class Service:
     return self._ExecCommand('uptime')
 
 
-class BaseHandler(tornado.web.RequestHandler):
-  """Base Handler
+class AbstractAuthHandler(tornado.web.RequestHandler):
+  """Authentication Handler
 
-  This handler is Base Class for tornado.web.RequestHandler.
-  If you need authentication on handler, extend BaseHandler.
+  This handler is base class for tornado.web.RequestHandler.
+  If you need authentication on handler, extend AbstractAuthHandler.
 
   Default setting using two different authenticate.
   1. Session authenticate
@@ -256,7 +256,7 @@ class BaseHandler(tornado.web.RequestHandler):
       authenticator.OnAuthenticated(self, auth)
 
 
-class LoginHandler(BaseHandler):
+class LoginHandler(AbstractAuthHandler):
   def get(self):
     self.render(
     "login.html",
@@ -276,13 +276,13 @@ class LoginHandler(BaseHandler):
       self.redirect("/login?" + params)
 
 
-class LogoutHandler(BaseHandler):
+class LogoutHandler(AbstractAuthHandler):
   def get(self):
     self.clear_cookie("user")
     self.redirect("/login")
 
 
-class LsHandler(BaseHandler):
+class LsHandler(AbstractAuthHandler):
   """Shows the output of '/bin/ls'.
 
   This handler accepts GET requests and send the output of
@@ -309,7 +309,7 @@ class LsHandler(BaseHandler):
     self.write(self.service.LsCommand())
 
 
-class DfHandler(BaseHandler):
+class DfHandler(AbstractAuthHandler):
   """Shows the output of '/bin/df -h'.
 
   This handler accepts GET requests and send the output of
@@ -336,7 +336,7 @@ class DfHandler(BaseHandler):
     self.write(self.service.DfCommand())
 
 
-class StatuszHandler(BaseHandler):
+class StatuszHandler(AbstractAuthHandler):
   """Shows the output of system status.
 
   This handler accepts GET requests and send the output of
