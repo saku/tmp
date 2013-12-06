@@ -107,11 +107,6 @@ Swap:            0          0          0
 </pre>"""
 
 
-APP_SETTINGS = {
-  "cookie_secret": "ADA7D03B-B889-45C7-ACB9-423DDD88A725",
-  "login_url": "/login",
-  "xsrf_cookies": True,
-}
 STUB_AUTHENTICATORS = dict(authenticators=[StubAuthenticator()])
 
 
@@ -121,7 +116,7 @@ class LoginHandlerTest(tornado.testing.AsyncHTTPTestCase):
       [
         (r'/login', server.LoginHandler)
       ],
-      **APP_SETTINGS)
+      **server.settings)
 
   def test_login_xsrf_using(self):
     self.http_client.fetch(self.get_url('/login'), self.stop)
@@ -149,7 +144,7 @@ class LsHandlerTest(tornado.testing.AsyncHTTPTestCase):
         (r'/', server.LsHandler, STUB_AUTHENTICATORS),
         (r'/ls', server.LsHandler, STUB_AUTHENTICATORS),
       ],
-      **APP_SETTINGS)
+      **server.settings)
 
   def test_toppage_should_contain_bin(self):
     self.http_client.fetch(self.get_url('/'), self.stop)
@@ -169,7 +164,7 @@ class DfHandlerTest(tornado.testing.AsyncHTTPTestCase):
       [
         (r'/df', server.DfHandler, STUB_AUTHENTICATORS),
       ],
-      **APP_SETTINGS)
+      **server.settings)
 
   def test_dfpage_should_contain_disks(self):
     self.http_client.fetch(self.get_url('/df'), self.stop)
@@ -190,7 +185,7 @@ class StatuszHandlerTest(tornado.testing.AsyncHTTPTestCase):
          dict(authenticators=[StubAuthenticator()],
               service=StubService())),
       ],
-      **APP_SETTINGS)
+      **server.settings)
 
   def test_statuszpage_should_contain_needed_result(self):
     self.http_client.fetch(self.get_url('/statusz'), self.stop)

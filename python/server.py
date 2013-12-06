@@ -108,7 +108,15 @@ import tornado.web
 import urllib
 
 
+"""
+Server Settings.
+"""
 define('port', default=12345, help='port to listen', metavar='PORT')
+settings = {
+  "cookie_secret": "ADA7D03B-B889-45C7-ACB9-423DDD88A725",
+  "login_url": "/login",
+  "xsrf_cookies": True,
+}
 
 
 def _Escape(str):
@@ -381,11 +389,6 @@ def main(args):
     args : list of command line arguments.
   """
   tornado.options.parse_command_line(args)
-  settings = {
-    "cookie_secret": "ADA7D03B-B889-45C7-ACB9-423DDD88A725",
-    "login_url": "/login",
-    "xsrf_cookies": True,
-  }
   app = tornado.web.Application(
       [
           (r'/', LsHandler),
