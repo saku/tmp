@@ -149,7 +149,7 @@ class Authenticator:
   def Authenticate(self, handler):
     return None
 
-  def Authenticated(self, handler, auth):
+  def OnAuthenticated(self, handler, auth):
     return None
 
 
@@ -161,8 +161,8 @@ class SessionAuthenticator(Authenticator):
       return Auth(authid)
     return None
 
-  def Authenticated(self, handler, auth):
-    handler.set_secure_cookie("authid", auth.authid)
+  def OnAuthenticated(self, handler, auth):
+    handler.set_secure_cookie("authid", auth.AuthId())
 
 
 class PasswordAuthenticator(Authenticator):
@@ -253,7 +253,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
   def _Authenticated(self, auth):
     for authenticator in self._authenticators:
-      authenticator.Authenticated(self, auth)
+      authenticator.OnAuthenticated(self, auth)
 
 
 class LoginHandler(BaseHandler):

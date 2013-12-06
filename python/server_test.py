@@ -38,7 +38,7 @@ class StubAuth:
     return "testUser"
 
 
-class StubAuthenticator:
+class StubAuthenticator(server.SessionAuthenticator):
   """Stub of authenticator
 
   This Class used to pass authentication forcely by test porpose.
@@ -46,9 +46,6 @@ class StubAuthenticator:
 
   def Authenticate(self, handler):
     return StubAuth()
-
-  def Authenticated(self, handler, auth):
-    handler.set_secure_cookie("authid", auth.AuthId())
 
 
 class StubService:
